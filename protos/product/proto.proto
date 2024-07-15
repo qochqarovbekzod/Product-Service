@@ -1,0 +1,296 @@
+syntax="proto3";
+
+option go_package = "generated/product/";
+
+package product;
+
+service ProductService{
+    rpc CreateProduct(CreateProductRequest) returns (CreateProductResponse);
+
+    rpc UpdateProduct(UpdateProductRequest) returns (UpdateProductResponse);
+
+    rpc DeleteProduct(DeleteProductRequest) returns (DeleteProductResponse);
+
+    rpc GetProduct(GetProductRequest) returns (GetProductResponse);
+
+    rpc GetbyIdProduct(GetbyIdProductRequest) returns (GetbyIdProductResponse);
+    
+    rpc GetallProducts(GetallProductsRequest) returns (GetallProductsResponse);
+    
+    rpc CreateRatingProducts(CreateRatingProductsRequest) returns (CreateRatingProductsResponse);
+
+    rpc GetProductRatings(GetProductRatingsRequest) returns (GetProductRatingsResponse);
+
+    rpc CreateOrder(CreateOrderRequest) returns (CreateOrderResponse);
+
+    rpc DeleteOrder(DeleteOrderRequest)  returns (DeleteOrderResponse);
+
+    rpc UpdateOrder(UpdateOrderRequest) returns (UpdateOrderResponse);
+
+    rpc GetallOrder(GetallOrderRequest) returns (GetallOrderResponse);
+
+    rpc GetByIdOrder(GetByIdOrderRerquest) returns (GetByIdOrderResponse);
+
+    rpc CreatePayment(CreatePaymentRequest) returns (CreatePaymentResponse);
+
+    rpc PaymentStatus(PaymentStatusRequest) returns (PaymentStatusResponse);
+
+    // rpc UpdateDeliveryInformation(UpdateDeliveryInformationRequest) returns (UpdateDeliveryInformationResponse);
+}
+
+message CreateProductRequest{
+    string name=1;
+    string description=2;
+    float price=3;
+    string category_id=4;
+    int64 quantity=5;
+}
+
+message CreateProductResponse{
+    string id=1;
+    string name=2;
+    string description=3;
+    float price=4;
+    string category_id=5;
+    int64 quantity=6;
+    string created_ad=7;
+}
+
+message UpdateProductRequest{
+    string id=1;
+    string name=2;
+    string price=3;
+}
+
+message UpdateProductResponse{
+    string id=1;
+    string name=2;
+    string description=3;
+    float price=4;
+    string category_id=5;
+    int64 quantity=6;
+    string updated_ad=7;
+}
+
+message DeleteProductRequest{
+    string id=1;
+}
+
+message DeleteProductResponse{
+    string success=1;
+}
+
+message GetProductRequest{
+    int32 limit=1;
+    int32 offset=2;
+}
+
+message GetProductResponse{
+    repeated Product products=1;
+    int32 total=2;
+    int32 limit=3;
+    int32 offset=4;
+}
+
+message GetbyIdProductRequest{
+    string id=1;
+}
+
+message GetbyIdProductResponse{
+    string id=1;
+    string name=2;
+    string description=3;
+    float price=4;
+    string category_id=5;
+    int64 quantity=6;
+    string creted_at=7;
+    string updated_ad=8;
+}
+
+message GetallProductsRequest{
+   string category=1;
+   float min_price =2;
+   float max_price=3;
+   int32 limit=4;
+   int32 offset=5;
+}
+
+message GetallProductsResponse{
+    repeated Product products=1;
+    int32 total=2;
+    int32 limit=3;
+    int32 offset=4;
+}
+
+message Product{
+    string id=1;
+    string name=2;
+    float price=4;
+    string category_id=5;
+}
+
+message CreateRatingProductsRequest{
+    string product_id=1;
+    float rating=2;
+    string comment=3;
+    string user_id=4;
+}
+
+message CreateRatingProductsResponse{
+    string id=1;
+    string product_id=2;
+    string user_id=3;
+    float  rating=4;
+    string comment=5;
+    string creted_at=6;
+}
+
+message GetProductRatingsRequest{
+    string product_id=1;
+}
+
+message GetProductRatingsResponse{
+    repeated CreateRatingProductsResponse retings=1;
+    float average_rating=2;
+    float total_rating=3;
+}
+
+message CreateOrderRequest{
+    repeated Item items=1;
+    string user_id=2;
+    ShippingAddress shipping_address=3;
+}
+
+message Item{
+    string product_id=1;
+    int32 quantity=2;
+}
+
+message CreateOrderResponse{
+    string id=1;
+    string user_id=2;
+    repeated ItemResponse items=3;
+    float total_amount=4;
+    string status=5;
+    ShippingAddress shipping_address=6;
+    string creted_at=7;
+    
+}
+
+message DeleteOrderRequest{
+    string order_id=1;
+}
+
+message DeleteOrderResponse{
+    string  id=1;
+    string status=2;
+    string deleted_at=3;
+}
+
+message UpdateOrderRequest{
+    string id=1;
+    string status=2;
+}
+
+message UpdateOrderResponse{
+    string id=1;
+    string status=2;
+    string updated_at=3;
+}
+
+message GetallOrderRequest{
+    int32 offset=1;
+    int32 limit=2;
+}
+
+message GetallOrderResponse{
+    repeated Order orders=3;
+    int32 total=4;
+    int32 offset=5;
+    int32 limit=6;
+}
+
+message Order{
+    string id=1;
+	string user_id=2;
+	string total_amount=3;
+	string status=4;
+	string shipping_address=5;
+	string created_at=6;
+}
+
+
+message GetByIdOrderRerquest{
+    string order_id=1;
+}
+
+message GetByIdOrderResponse{
+    string id=1;
+    string user_id=2;
+    repeated ItemResponse items=3;
+    string total_amount=4;
+    string status=5;
+    ShippingAddress shipping_address=6;
+    string creted_at=7;
+    string updated_at=8;
+
+}
+
+message ItemResponse{
+    string product_id=1;
+    int32 quantity=2;
+    float price=3;
+}
+
+message ShippingAddress{
+    string street=1;
+    string city=2;
+    string category=3;
+    string zip_code=4;
+}
+
+message CreatePaymentRequest{
+    string order_id=1;
+    string payment_method=2;
+    string card_number=3;
+    string expiry_date=4;
+    string svv=5;
+}
+
+message CreatePaymentResponse{
+    string payment_id=2;
+    string order_id=1;
+    float  amount=3;
+    string status=4;
+    string payment_method=7;
+    string transaction_id=5;
+    string created_at=6;
+
+}
+
+message PaymentStatusRequest{
+    string order_id=1;
+}
+
+message PaymentStatusResponse{
+    string order_id=1;
+    string payment_id=2;
+    float  amount=3;
+    string status=4;
+    string transaction_id=5;
+    string created_at=6;
+}
+
+// message UpdateDeliveryInformationRequest{
+//     string tracking_number=1;
+//     string carrier=2;
+//     string estimated_delivery_date=3;
+// }
+
+// message UpdateDeliveryInformationResponse{
+//     string order_id=1;
+//     string tracking_number=2;
+//     string carrier=3;
+//     string estimated_delivery_date=4;
+//     string updated_at=5;
+// }
